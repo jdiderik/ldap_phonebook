@@ -2,8 +2,7 @@
 <html lang="en" class="notranslate" translate="no">
     <head>
         <meta name="google" content="notranslate" />
-        <!-- Replace your-domain.example.com with your PUBLIC_ORIGIN (see README). -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://your-domain.example.com http://127.0.0.1:8188 http://127.0.0.1:3188 http://127.0.0.1:7242 https://unpkg.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://unpkg.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com; media-src *; img-src 'self' data: content:;">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: {{{ PUBLIC_ORIGIN }}} http://127.0.0.1:8188 http://127.0.0.1:3188 http://127.0.0.1:7242 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://unpkg.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com; media-src *; img-src 'self' data: content:;">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="mobile-web-app-capable" content="yes">

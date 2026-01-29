@@ -4,11 +4,8 @@ LDAP-backed phonebook with a Fastify API and Mithril.js frontend.
 
 ## Deployment / Configuration
 
-Before production deploy, set your public origin and update the frontend:
+**PUBLIC_ORIGIN** is injected at build time from environment (e.g. `frontend/.env`) into the CSP meta tag and PWA manifest. No manual find-and-replace is needed.
 
-- **PUBLIC_ORIGIN** (or production URL): Replace the placeholder `your-domain.example.com` in:
-  - `frontend/src/index.html` (Content-Security-Policy meta tag)
-  - `frontend/.pwamanifestrc` (`scope` and `start_url`)
-  with your actual public origin. You can set `PUBLIC_ORIGIN` in `.env` and use a pre-build script to substitute it, or do a one-time find-and-replace before deploy.
-
-See root `.env.example` and `frontend/.env.example` for a commented `PUBLIC_ORIGIN` line.
+- Set `PUBLIC_ORIGIN` in `frontend/.env`: e.g. `http://127.0.0.1:8188` for local dev (or the port your API runs on), and `https://your-domain.example.com` for production builds.
+- See `frontend/.env.example` for the dev default and production example.
+- The PWA manifest config is generated from `frontend/.pwamanifestrc.template` by `frontend/scripts/inject-public-origin.js` before each build/dev run; output is `frontend/.pwamanifestrc` (gitignored). No source files are modified.
