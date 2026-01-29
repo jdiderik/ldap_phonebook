@@ -17,9 +17,9 @@
   "type": "module",
   "dependencies": {
     "@fastify/cors": "^11.2.0",
-    "@fastify/static": "^7.0.0",
+    "@fastify/static": "^8.0.0",
     "dotenv": "^16.4.5",
-    "fastify": "^4.28.1",
+    "fastify": "^5.0.0",
     "jose": "^6.1.3",
     "ldapts": "^8.1.3",
     "lmdb": "^3.5.0",

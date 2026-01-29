@@ -5,6 +5,7 @@ import cors from "@fastify/cors";
 
 /**
  * Registers CORS in non-production: allow requests from http://127.0.0.1:* and http://localhost:* (e.g. Parcel on 1234).
+ * Pass the origin string explicitly so the plugin always sets Access-Control-Allow-Origin (required by Chromium with credentials).
  * @param {import("fastify").FastifyInstance} fastify
  */
 export async function registerCors(fastify) {
@@ -12,11 +13,10 @@ export async function registerCors(fastify) {
   await fastify.register(cors, {
     origin: (origin, cb) => {
       if (
-        !origin ||
-        origin.startsWith("http://127.0.0.1:") ||
-        origin.startsWith("http://localhost:")
+        origin &&
+        (origin.startsWith("http://127.0.0.1:") || origin.startsWith("http://localhost:"))
       ) {
-        cb(null, true);
+        cb(null, origin);
       } else {
         cb(null, false);
       }
