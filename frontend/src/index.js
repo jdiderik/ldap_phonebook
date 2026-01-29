@@ -1,9 +1,6 @@
 import state from "./js/lib/state";
 import { setup } from "./js/routes";
 
-/** API base URL: dev uses API_PORT (default 8188); production uses same origin. */
-const apiPort = process.env.API_PORT || process.env.PORT || "8188";
-
 /**
  * Global app config and lifecycle. Exposed as window.app.
  * @property {string} root - API base URL (e.g. http://127.0.0.1:8188/api).
@@ -12,9 +9,7 @@ const apiPort = process.env.API_PORT || process.env.PORT || "8188";
  * @property {Object} state - Reference to the state module.
  */
 export const app = {
-    root: process.env.NODE_ENV !== "production"
-        ? `http://127.0.0.1:${apiPort}/api`
-        : `${window.location.origin}/api`,
+    root: `${window.location.origin}/api`,
 	auth: false,
 	isAdmin: false,
     /** Restores session from tokens, then sets up routes. Called on DOMContentLoaded. */

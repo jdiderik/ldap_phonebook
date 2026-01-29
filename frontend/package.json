@@ -5,9 +5,7 @@
   "description": "Phonebook",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "predev": "node scripts/inject-public-origin.js",
-    "dev": "parcel serve src/index.html --no-cache --dist-dir ./.dev/",
-    "prebuild": "node scripts/inject-public-origin.js && rm -rf ./www/* && rm -rf ./.parcel-cache/*",
+    "prebuild": "rm -rf ./www/* && rm -rf ./.parcel-cache/*",
     "build": "NODE_ENV=production parcel build src/index.html --no-source-maps --dist-dir ./www/ --public-url ./",
     "prebuild:debug": "rm -rf ./www/* && rm -rf ./.parcel-cache/*",
     "build:debug": "parcel build src/index.html --no-optimize --dist-dir ./www/ --public-url ./"
@@ -25,9 +23,6 @@
     "@parcel/packager-raw-url": "^2.10.3",
     "@parcel/packager-xml": "^2.10.3",
     "@parcel/transformer-sass": "^2.10.3",
-    "@parcel/transformer-webmanifest": "^2.10.3",
-    "parcel": "^2.10.3",
-    "parcel-config-pwa-manifest": "^0.1.6",
-    "parcel-transformer-env-variables-injection": "^0.1.2"
+    "parcel": "^2.10.3"
   }
 }

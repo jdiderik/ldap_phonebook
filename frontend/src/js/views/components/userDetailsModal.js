@@ -21,6 +21,20 @@ export const closeUserDetails = () => {
 };
 
 /**
+ * Formats LDAP-style timestamps (e.g. 20260128042514.0Z) as YYYY-MM-DD HH:mm:ss.
+ * @param {*} value - Raw value (string or array of strings).
+ * @returns {string} Formatted date string or "".
+ */
+const formatTimestamp = (value) => {
+	if (value === null || value === undefined) return "";
+	const str = Array.isArray(value) ? value[0] : value;
+	if (typeof str !== "string") return "";
+	const match = str.match(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/);
+	if (!match) return str;
+	return `${match[1]}-${match[2]}-${match[3]} ${match[4]}:${match[5]}:${match[6]}`;
+};
+
+/**
  * Formats a value for display in the details table (handles arrays, objects, primitives).
  * @param {*} value - Raw value from user object.
  * @returns {string} Display string or "".
@@ -104,8 +118,8 @@ const userDetailsModal = {
 						renderField("Postal Code", selectedUser.location?.postalCode),
 						renderGroups(selectedUser.groups),
 						renderField("Manager DN", selectedUser.managerDN),
-						renderField("Last Modified", selectedUser.whenChanged),
-						renderField("Created", selectedUser.whenCreated),
+						renderField("Last Modified", formatTimestamp(selectedUser.whenChanged) || null),
+						renderField("Created", formatTimestamp(selectedUser.whenCreated) || null),
 						renderField("Last Logon", selectedUser.lastLogon),
 						renderField("Last Logon (replicated)", selectedUser.lastLogonTimestamp),
 						renderField("Password Last Set", selectedUser.passwordLastSet),
