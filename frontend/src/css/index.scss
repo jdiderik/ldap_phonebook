@@ -1,0 +1,351 @@
+// Phonebook app styles: layout (home, content, bars), contact table, modals, login.
+@import "../../node_modules/construct-ui/src/index.scss";
+
+* {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+html{
+    height: 100%;
+}
+body {
+    -webkit-touch-callout: none;
+    /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;
+    /* prevent webkit from resizing text to fit */
+    background-color: #E4E4E4;
+    background-image: linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
+    font-size: 16px;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+#root {
+    background: #E4E4E4;
+    padding: 0px;
+    margin: 0px;
+
+}
+
+/* Allow text selection in user details modal */
+.user-details-modal-content {
+	user-select: text;
+	-webkit-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+}
+
+/* Landscape layout (with min-width) */
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+    .app {
+        background-position: left center;
+        padding: 75px 0px 75px 170px;
+        /* padding-top + padding-bottom + text area = image height */
+        margin: -90px 0px 0px -198px;
+        /* offset vertical: half of image height */
+        /* offset horizontal: half of image width and text area width */
+    }
+}
+
+@keyframes fade {
+    from {
+        opacity: 1.0;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    to {
+        opacity: 1.0;
+    }
+}
+
+@-webkit-keyframes fade {
+    from {
+        opacity: 1.0;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    to {
+        opacity: 1.0;
+    }
+}
+
+.blink {
+    animation: fade 3000ms infinite;
+    -webkit-animation: fade 3000ms infinite;
+}
+.home{
+
+    height: 100%;
+    width: 100%;
+    min-width: 250px;
+    min-height: 100%;
+    max-height: 100%;
+    max-width: 100vw;
+    flex-flow: column wrap;
+    place-content: flex-start;
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+
+}
+.logoBar{
+    display: inline-flex;
+    height: 50px;
+    width: 100%;
+    background: url(../img/logo.png) no-repeat center center;
+    background-size: contain;
+    background-color: white;
+
+}
+.content{
+    display: inline-flex;
+    flex-flow: column;
+    flex-grow: 1;
+    place-content: flex-start;
+    align-items: flex-start;
+    display: inline-flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    overflow-y: auto;
+
+}
+
+
+.bottomBar{
+    display: inline-flex;
+    align-self: flex-end;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+
+}
+
+.contact-table-container {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	flex: 1;
+
+	.loading {
+		margin: 10px;
+	}
+
+	.isFavorite svg,
+	.cui-icon-star svg {
+		width: 24px;
+		height: 24px;
+	}
+	.isFavorite svg {
+		fill: yellow;
+	}
+
+	// Search box styling
+	.search-box-container {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		
+		.search-input {
+			&:focus {
+				border-color: #0066cc !important;
+				box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1);
+			}
+		}
+		
+		.clear-search-btn {
+			&:hover {
+				background: #f0f0f0 !important;
+			}
+			
+			&:active {
+				transform: scale(0.98);
+			}
+		}
+		
+		.favorites-toggle-btn {
+			&:hover {
+				background: #e8e8e8 !important;
+			}
+			
+			&:active {
+				transform: scale(0.98);
+			}
+		}
+		
+		.login-key-btn {
+			border: 1px solid #999;
+			&:hover {
+				background: #e8e8e8 !important;
+				border-color: #666;
+			}
+			&:active {
+				transform: scale(0.98);
+			}
+		}
+		
+		.search-results {
+			white-space: nowrap;
+		}
+	}
+	
+	// Vanilla Mithril table styling
+	.contact-table {
+		font-size: 14px;
+		background-color: white;
+		border: 1px solid #ddd;
+		text-transform: none; // Override body's uppercase transform
+		width: 100%;
+		border-collapse: collapse;
+		
+		thead {
+			background-color: #f5f5f5;
+			position: sticky;
+			top: 0;
+			z-index: 10;
+			box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+			
+			th {
+				padding: 0.75rem 0.5rem;
+				font-weight: bold;
+				border-bottom: 2px solid #ddd;
+				border-right: 1px solid #ddd;
+				text-align: left;
+				background-color: #f5f5f5;
+				white-space: nowrap;
+				
+				&.sortable {
+					cursor: pointer;
+					user-select: none;
+					
+					&:hover {
+						background-color: #e8e8e8;
+					}
+				}
+			}
+		}
+		
+		tbody {
+			tr {
+				border-bottom: 1px solid #eee;
+				
+				&:hover {
+					background-color: #f9f9f9;
+				}
+				
+				&:nth-child(even) {
+					background-color: #fafafa;
+				}
+				
+				td {
+					padding: 0.75rem 0.5rem;
+					border-right: 1px solid #eee;
+					vertical-align: middle;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					max-width: 200px;
+					
+					// Favorite checkbox column
+					&:first-child {
+						text-align: center;
+						max-width: 50px;
+						padding: 0.5rem;
+						
+						input[type="checkbox"] {
+							cursor: pointer;
+							width: 18px;
+							height: 18px;
+							margin: 0;
+						}
+					}
+					
+					a {
+						color: #0066cc;
+						text-decoration: none;
+						
+						&:hover {
+							text-decoration: underline;
+						}
+					}
+					
+					.details-btn {
+						padding: 4px 8px;
+						cursor: pointer;
+						border: 1px solid #ddd;
+						background: #f5f5f5;
+						border-radius: 3px;
+						
+						&:hover {
+							background: #e0e0e0;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.user-details-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 1rem;
+	
+	.field-label {
+		font-weight: bold;
+		padding: 0.5rem;
+		text-align: right;
+		width: 30%;
+		border-right: 1px solid #ddd;
+		background-color: #f9f9f9;
+	}
+	
+	.field-value {
+		padding: 0.5rem;
+		text-align: left;
+		word-break: break-word;
+	}
+	
+	tr {
+		border-bottom: 1px solid #eee;
+	}
+}
+
+.json-view {
+	font-family: 'Courier New', monospace;
+	font-size: 12px;
+	line-height: 1.5;
+	margin-top: 1rem;
+	padding: 1rem;
+	background-color: #f5f5f5;
+	border-radius: 4px;
+	overflow: auto;
+	max-height: 400px;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+.login{
+	display: flex;
+    align-self: center;
+    justify-content: space-around;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+

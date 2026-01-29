@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" class="notranslate" translate="no">
+    <head>
+        <meta name="google" content="notranslate" />
+        <!-- Replace your-domain.example.com with your PUBLIC_ORIGIN (see README). -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://your-domain.example.com http://127.0.0.1:8188 http://127.0.0.1:3188 http://127.0.0.1:7242 https://unpkg.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://unpkg.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <link rel="apple-touch-icon" sizes="180x180" href="./img/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon-16x16.png">
+        <link rel="manifest" href="./site.webmanifest">
+        <link rel="stylesheet" type="text/css" href="css/index.scss">
+        <title>Phonebook</title>
+    </head>
+    <body>
+        <div id="root">
+            <div class="app">
+                <h1>Phonebook</h1>
+                <div id="deviceready" class="blink">
+                    <p class="event listening">Starting...</p>
+                </div>
+            </div>
+        </div>
+        <script type="module" src="index.js"></script>
+    </body>
+</html>

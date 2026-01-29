@@ -1,0 +1,22 @@
+# Sensitive: env and secrets (LDAP, JWT, passwords)
+.env
+.env.local
+.env.*.local
+frontend/.env
+
+# Sensitive: local data (LMDB, sync logs, LDAP dump)
+data/
+
+# Dependencies
+node_modules/
+
+# Build and cache
+frontend/.dev/
+frontend/.parcel-cache/
+frontend/www/
+frontend/docs/
+
+# IDE / OS
+.cursor/
+.DS_Store
+*.log
