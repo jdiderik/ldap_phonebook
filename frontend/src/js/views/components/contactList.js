@@ -31,6 +31,9 @@ let showFavoritesOnly = false;
 // Group filter state (empty = all groups)
 let selectedGroupFilter = "";
 
+// UAC (userAccountControl) filter state (empty = all UAC)
+let selectedUacFilter = "";
+
 // Build unique sorted list of group names from user list
 const getUniqueGroups = (users) => {
 	const set = new Set();
@@ -41,6 +44,16 @@ const getUniqueGroups = (users) => {
 				if (name != null && String(name).trim() !== "") set.add(String(name).trim());
 			}
 		}
+	}
+	return [...set].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+};
+
+// Build unique sorted list of UAC display strings from user list (uacDescription or (value) or "—")
+const getUniqueUacOptions = (users) => {
+	const set = new Set();
+	for (const user of users) {
+		const label = user.uacDescription || (user.uac != null ? `(${user.uac})` : "—");
+		set.add(label);
 	}
 	return [...set].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
 };
@@ -101,6 +114,14 @@ const filterData = (data) => {
 			return names.some((n) => n != null && String(n).trim() === selectedGroupFilter);
 		});
 	}
+
+	// Apply UAC (userAccountControl) filter
+	if (app.isAdmin && selectedUacFilter) {
+		filtered = filtered.filter((user) => {
+			const label = user.uacDescription || (user.uac != null ? `(${user.uac})` : "—");
+			return label === selectedUacFilter;
+		});
+	}
 	
 	// Apply search filter (uses API display fields: fullName, location, phone, mobile, email)
 	if (searchQuery && searchQuery.trim() !== "") {
@@ -145,11 +166,12 @@ const handleSearchInput = (value) => {
 	m.redraw();
 };
 
-// Clear search and group filter
+// Clear search, group filter, and UAC filter
 const clearSearch = () => {
 	searchQuery = "";
 	if (app.isAdmin) {
 		selectedGroupFilter = "";
+		selectedUacFilter = "";
 	}
 	if (debounceTimer) {
 		clearTimeout(debounceTimer);
@@ -200,6 +222,7 @@ const contactList = {
 		// Add favorites (API already provides fullName, location, phone, mobile, email)
 		const transformedData = addFavoritesToUserData(state.phoneList);
 		const uniqueGroups = app.isAdmin ? getUniqueGroups(transformedData) : [];
+		const uniqueUacOptions = app.isAdmin ? getUniqueUacOptions(transformedData) : [];
 		const filteredData = filterData(transformedData);
 		const sortedData = sortData(filteredData);
 		
@@ -273,7 +296,26 @@ const contactList = {
 					m("option", { value: "" }, "All groups"),
 					...uniqueGroups.map((name) => m("option", { value: name, id: name }, name)),
 				]),
-				(searchQuery || selectedGroupFilter) && m("button.clear-search-btn", {
+				app.isAdmin && m("select.uac-filter-select", {
+					style: {
+						padding: "0.5rem 1rem",
+						fontSize: "14px",
+						border: "1px solid #ddd",
+						borderRadius: "4px",
+						background: "#fff",
+						minWidth: "180px",
+						outline: "none",
+					},
+					value: selectedUacFilter,
+					onchange: (e) => {
+						selectedUacFilter = e.target.value || "";
+						m.redraw();
+					},
+				}, [
+					m("option", { value: "" }, "All UAC"),
+					...uniqueUacOptions.map((label) => m("option", { value: label, id: label }, label)),
+				]),
+				(searchQuery || selectedGroupFilter || selectedUacFilter) && m("button.clear-search-btn", {
 					style: {
 						padding: "0.5rem 1rem",
 						fontSize: "14px",
@@ -365,7 +407,7 @@ const contactList = {
 						title: "Login",
 						onclick: openLoginModal,
 					}, "🔑"),
-				(searchQuery || showFavoritesOnly || selectedGroupFilter) && m("span.search-results", {
+				(searchQuery || showFavoritesOnly || selectedGroupFilter || selectedUacFilter) && m("span.search-results", {
 					style: {
 						color: "#666",
 						fontSize: "14px",
