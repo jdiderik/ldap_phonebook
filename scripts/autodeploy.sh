@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Autodeploy: same as deploy but only restarts pm2 when server-relevant files changed.
 # Server-relevant = server/, .env, package.json, package-lock.json.
+# When package.json or package-lock.json changed, runs npm ci --omit=dev on the server before restart.
 # Use: npm run autodeploy  or  ./scripts/autodeploy.sh [--no-build] [--sync]
 # Options: --no-build (skip frontend build), --sync (run LDAP sync on server when we restart).
 
@@ -60,11 +61,13 @@ trap 'rm -f "$DRY_RUN_OUT"' EXIT
 /usr/bin/rsync -ani --delete --rsync-path=/usr/bin/rsync "${RSYNC_EXCLUDES[@]}" ./ "$DEST/" 2>/dev/null > "$DRY_RUN_OUT" || true
 
 NEED_RESTART=
+NEED_NPM_CI=
 while IFS= read -r line; do
   path="${line#???????????}"  # strip first 11 chars (itemize change type)
   while [[ "$path" == " "* ]]; do path="${path# }"; done  # trim leading spaces
   case "$path" in
-    server/*|.env|package.json|package-lock.json) NEED_RESTART=1; break ;;
+    server/*|.env)           NEED_RESTART=1 ;;
+    package.json|package-lock.json) NEED_RESTART=1; NEED_NPM_CI=1 ;;
   esac
 done < "$DRY_RUN_OUT"
 
@@ -72,13 +75,15 @@ done < "$DRY_RUN_OUT"
 echo "Syncing to $DEST..."
 /usr/bin/rsync -avz --delete --rsync-path=/usr/bin/rsync "${RSYNC_EXCLUDES[@]}" ./ "$DEST/"
 
-# 4. Restart only when server-relevant files changed
+# 4. Restart only when server-relevant files changed; run npm ci when package*.json changed
 if [[ -n "$NEED_RESTART" ]]; then
   REMOTE_HOST="${DEST%%:*}"
   REMOTE_PATH="${DEST#*:}"
   REMOTE_CMD="cd $REMOTE_PATH"
+  [[ -n "$NEED_NPM_CI" ]] && REMOTE_CMD="$REMOTE_CMD && npm ci --omit=dev"
   [[ -n "$DO_SYNC" ]] && REMOTE_CMD="$REMOTE_CMD && npm run start:sync"
   REMOTE_CMD="$REMOTE_CMD && pm2 restart phonebook"
+  [[ -n "$NEED_NPM_CI" ]] && echo "package.json or package-lock.json changed; will run npm ci on server."
   echo "Server files changed; running on $REMOTE_HOST: pm2 restart phonebook"
   ssh "$REMOTE_HOST" "bash -lc '$REMOTE_CMD'"
 else

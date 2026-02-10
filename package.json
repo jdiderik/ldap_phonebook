@@ -1,16 +1,16 @@
 {
   "name": "phonebook",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "server/api.js",
   "scripts": {
     "dev": "NODE_ENV=development nodemon server/api.js",
     "start:api": "node server/api.js",
     "start:sync": "node server/sync.js",
-    "deploy": "./scripts/deploy.sh",
-    "deploy:no-build": "./scripts/deploy.sh --no-build",
-    "deploy:sync": "./scripts/deploy.sh --sync",
-    "autodeploy": "./scripts/autodeploy.sh",
+    "deploy": "./scripts/autodeploy.sh",
+    "deploy:no-build": "./scripts/autodeploy.sh --no-build",
+    "deploy:sync": "./scripts/autodeploy.sh --sync",
+    "deploy:restart": "./scripts/deploy.sh",
     "test:ldap": "PHONEBOOK_TEST_MODE=1 node server/testLdap.js",
     "reset:db": "rm -rf ./data/lmdb && echo 'LMDB database deleted. Run npm run start:sync to resync.'",
     "test": "echo \"Error: no test specified\" && exit 1"
