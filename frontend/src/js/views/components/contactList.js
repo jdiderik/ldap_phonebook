@@ -430,10 +430,10 @@ const contactList = {
 			}, [
 				m("thead", [
 					m("tr", [
-						app.auth && m("th", {
+						app.auth && m("th.col-favorite", {
 							style: { width: "50px", textAlign: "center", cursor: "default" },
 						}, "⭐"),
-						m("th.sortable", {
+						m("th.sortable.col-name", {
 							style: { cursor: "pointer", userSelect: "none" },
 							onclick: () => handleSort("fullName"),
 						}, "Name" + getSortIndicator("fullName")),
@@ -474,7 +474,7 @@ const contactList = {
 							key: user.id || user.fullName,
 						}, [
 							...(app.auth ? [
-								m("td", {
+								m("td.col-favorite", {
 									style: { textAlign: "center", padding: "0.5rem" },
 								}, [
 									m("input[type=checkbox]", {
@@ -487,7 +487,7 @@ const contactList = {
 									}),
 								]),
 							] : []),
-							m("td", user.fullName || ""),
+							m("td.col-name", user.fullName || ""),
 							m("td", user.title || ""),
 							m("td", user.department || ""),
 							m("td", user.office || ""),

@@ -261,21 +261,31 @@ body {
 					overflow: hidden;
 					text-overflow: ellipsis;
 					max-width: 200px;
+				}
+				
+				// Name column: important, give it room (especially when first column when not logged in)
+				td.col-name,
+				th.col-name {
+					min-width: 200px;
+					max-width: 280px;
+				}
+				
+				// Favorite checkbox column (only present when logged in)
+				td.col-favorite {
+					text-align: center;
+					max-width: 50px;
+					min-width: 50px;
+					padding: 0.5rem;
 					
-					// Favorite checkbox column
-					&:first-child {
-						text-align: center;
-						max-width: 50px;
-						padding: 0.5rem;
-						
-						input[type="checkbox"] {
-							cursor: pointer;
-							width: 18px;
-							height: 18px;
-							margin: 0;
-						}
+					input[type="checkbox"] {
+						cursor: pointer;
+						width: 18px;
+						height: 18px;
+						margin: 0;
 					}
-					
+				}
+				
+				td {
 					a {
 						color: #0066cc;
 						text-decoration: none;
