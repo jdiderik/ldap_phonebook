@@ -13,9 +13,9 @@ export const vwHome = {
 	},
 	view: () => {
 		return m(".home", [
-			m(".logoBar", m(logoBar)),
+			// m(".logoBar", m(logoBar)),
 			m(".content", m(contactList)),
-			m(".bottomBar", m(menuBar)),
+			// m(".bottomBar", m(menuBar)),
 			m(userDetailsModal),
 			m(loginModal),
 		]);

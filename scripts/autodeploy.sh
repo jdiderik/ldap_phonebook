@@ -65,6 +65,7 @@ NEED_NPM_CI=
 while IFS= read -r line; do
   path="${line#???????????}"  # strip first 11 chars (itemize change type)
   while [[ "$path" == " "* ]]; do path="${path# }"; done  # trim leading spaces
+  path="${path#./}"  # rsync may output ./package.json
   case "$path" in
     server/*|.env)           NEED_RESTART=1 ;;
     package.json|package-lock.json) NEED_RESTART=1; NEED_NPM_CI=1 ;;

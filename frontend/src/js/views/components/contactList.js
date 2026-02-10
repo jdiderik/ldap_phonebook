@@ -3,6 +3,7 @@ import state from "../../lib/state";
 import { app } from "../../..";
 import { openUserDetails } from "./userDetailsModal";
 import { openLoginModal } from "./loginModal";
+import logoBar from "./logoBar";
 
 /**
  * Adds only favorites state to API list rows. Display fields come from the API. Favorites matched by opaque id.
@@ -246,37 +247,40 @@ const contactList = {
 					flexWrap: "wrap",
 				},
 			}, [
-				m("input.search-input", {
-					type: "text",
-					placeholder: "Search contacts...",
-					value: searchQuery,
-					oninput: (e) => handleSearchInput(e.target.value),
-					onkeydown: (e) => {
-						// Clear search on Escape key
-						if (e.key === "Escape") {
-							e.preventDefault();
-							clearSearch();
-							// Blur the input to remove focus
-							e.target.blur();
-						}
-					},
-					style: {
-						flex: 1,
-						minWidth: "200px",
-						maxWidth: "500px",
-						padding: "0.5rem 1rem",
-						fontSize: "14px",
-						border: "1px solid #ddd",
-						borderRadius: "4px",
-						outline: "none",
-					},
-					onfocus: (e) => {
-						e.target.style.borderColor = "#0066cc";
-					},
-					onblur: (e) => {
-						e.target.style.borderColor = "#ddd";
-					},
-				}),
+				m("div", { style: { display: "flex", alignItems: "center", gap: "0.5rem" } }, [
+					// Inline logo
+					m(".logo"),
+					m("input.search-input", {
+						type: "text",
+						placeholder: "Search contacts...",
+						value: searchQuery,
+						oncreate: (vnode) => { vnode.dom.focus(); },
+						oninput: (e) => handleSearchInput(e.target.value),
+						onkeydown: (e) => {
+							// Clear search on Escape key; keep focus in the input
+							if (e.key === "Escape") {
+								e.preventDefault();
+								clearSearch();
+							}
+						},
+						style: {
+							flex: 1,
+							minWidth: "200px",
+							maxWidth: "500px",
+							padding: "0.5rem 1rem",
+							fontSize: "14px",
+							border: "1px solid #ddd",
+							borderRadius: "4px",
+							outline: "none",
+						},
+						onfocus: (e) => {
+							e.target.style.borderColor = "#0066cc";
+						},
+						onblur: (e) => {
+							e.target.style.borderColor = "#ddd";
+						},
+					}),
+				]),
 				app.isAdmin && m("select.group-filter-select", {
 					style: {
 						padding: "0.5rem 1rem",
@@ -338,7 +342,7 @@ const contactList = {
 					onmouseleave: (e) => {
 						e.target.style.background = "#fff";
 					},
-				}, "✕ Clear"),
+				}, "✕ Clear [Esc]"),
 				app.auth && m("button.favorites-toggle-btn", {
 					style: {
 						padding: "0.5rem 1rem",

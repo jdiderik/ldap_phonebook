@@ -98,13 +98,13 @@ body {
     justify-content: flex-start;
 
 }
-.logoBar{
+.logo{
     display: inline-flex;
     height: 50px;
     width: 100%;
-    background: url(../img/logo.png) no-repeat center center;
+    background: url(../img/logo.jpg) no-repeat center center;
     background-size: contain;
-    background-color: white;
+    background-color: transparent;
 
 }
 .content{
