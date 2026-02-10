@@ -40,6 +40,7 @@ RSYNC_EXCLUDES=(
   --exclude='frontend/docs/'
   --exclude='.git/'
   --exclude='.cursor/'
+  --exclude='scripts/'
   --exclude='.DS_Store'
   --exclude='*.log'
   --exclude='.env.local'
